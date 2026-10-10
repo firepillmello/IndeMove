@@ -1,4 +1,4 @@
-# IndeMove
+# Indemove
 
 An original, responsive mobility and home-accessibility website built with Next.js 15 App Router, TypeScript, Tailwind CSS, and Lucide React. All catalog data is local. No database, authentication, analytics, or form backend is included.
 
@@ -94,3 +94,9 @@ npm run build:pages
 ```
 
 This generates `out/` for Pages with the `/IndeMove` path prefix, local unoptimized images, and directory-style URLs. All interactive features run in the browser, so no server is needed. Standard `npm run dev` and `npm run build` retain the normal Next.js configuration for other hosts. If the repository or owner changes, update the path and URL in the `build:pages` command. The workflow needs Actions enabled and permission to deploy to the `github-pages` environment.
+
+## Indemove profile and easier navigation
+
+The profile is now based in Allentown, Pennsylvania, with Allentown and the Lehigh Valley as the service-area label. Bethlehem, Easton, Whitehall, Emmaus, and Macungie remain sample communities whose actual coverage must be confirmed. The street address, ZIP, phone, email, hours, and other business-specific details still require verification. The email is now `hello@indemove.example`, a reserved placeholder that cannot be mistaken for another company’s real address.
+
+The interface uses larger everyday text, prominent phone help, four direct primary navigation choices, visual need cards, large form/finder controls, and responsive picture-and-label category rows. Validation passed: lint, TypeScript, the Pages production build, 19-route responsive checks at 320/375/720/1024/1440px, automated WCAG A/AA scans, and navigation/form/finder checks. A separate browser check verified the final Allentown/PA address, Indemove titles and email, JSON-LD, and mobile layouts.

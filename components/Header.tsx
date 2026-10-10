@@ -1,16 +1,56 @@
 'use client';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ChevronDown, Menu, Phone, X } from 'lucide-react';
+import { ArrowRight, Menu, Phone, X } from 'lucide-react';
 import { site } from '@/config/site';
 import { navigation } from '@/data/navigation';
-import { categories } from '@/data/products';
-export function Wordmark() { return <span className="wordmark"><span className="brand-symbol" aria-hidden="true"><span /><span /><span /></span>{site.name}<span className="brand-dot">.</span></span>; }
-export function MobileNav({ close }: { close: () => void }) { return <nav aria-label="Mobile navigation" className="mobile-nav">{navigation.map(item=><Link key={item.href} href={item.href} onClick={close}>{item.label}<ArrowUpRight size={18}/></Link>)}<Link className="button" href="/contact" onClick={close}>Free consultation <ArrowUpRight size={18}/></Link></nav>; }
-export function Header() {
- const [open,setOpen]=useState(false); const [productsOpen,setProductsOpen]=useState(false); const path=usePathname(); const menu=useRef<HTMLDivElement>(null); const toggle=useRef<HTMLButtonElement>(null); const mobileToggle=useRef<HTMLButtonElement>(null);
- useEffect(()=>{ const handler=(e:KeyboardEvent)=>{if(e.key==='Escape'){ setOpen(false);setProductsOpen(false);if(window.innerWidth<=1000)mobileToggle.current?.focus();else toggle.current?.focus(); }}; const outside=(e:PointerEvent)=>{if(menu.current&&!menu.current.contains(e.target as Node))setProductsOpen(false);}; document.addEventListener('keydown',handler);document.addEventListener('pointerdown',outside);return()=>{document.removeEventListener('keydown',handler);document.removeEventListener('pointerdown',outside);};},[]);
- return <header className="site-header"><div className="utility"><div className="container utility-inner"><span>Local delivery & in-home consultations available</span><div><a href={site.phoneHref}><Phone size={13}/>{site.phone}</a><span className="utility-hours">{site.hours}</span></div></div></div><div className="container header-inner"><Link href="/" aria-label={`${site.name} home`}><Wordmark/></Link><nav className="desktop-nav" aria-label="Main navigation">{navigation.map(item=>item.href==='/products'?<div ref={menu} key={item.href} className="nav-dropdown"><button ref={toggle} onClick={()=>setProductsOpen(!productsOpen)} aria-expanded={productsOpen} aria-controls="product-menu">Products <ChevronDown size={13}/></button>{productsOpen&&<div id="product-menu" className="dropdown-panel"><Link href="/products" onClick={()=>setProductsOpen(false)}>Explore all solutions <ArrowUpRight size={16}/></Link>{categories.map(c=><Link key={c.slug} href={`/products/${c.slug}`} onClick={()=>setProductsOpen(false)}>{c.name}</Link>)}</div>}</div>:<Link key={item.href} href={item.href} aria-current={path===item.href?'page':undefined}>{item.label}</Link>)}</nav><Link href="/contact" className="button header-cta">Free consultation <ArrowUpRight size={16}/></Link><a href={site.phoneHref} className="mobile-call" aria-label={`Call ${site.name}`}><Phone size={19}/></a><button ref={mobileToggle} className="menu-toggle" aria-label={open?'Close menu':'Open menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div>{open&&<div id="mobile-navigation"><MobileNav close={()=>setOpen(false)}/></div>}</header>;
+
+export function Wordmark() {
+  return <span className="wordmark"><span className="brand-symbol" aria-hidden="true"><span /><span /><span /></span>{site.name}<span className="brand-dot">.</span></span>;
 }
-export function StickyMobileActions(){return <div className="sticky-mobile-actions"><a href={site.phoneHref}><Phone size={18}/> Call now</a><Link href="/contact">Free consultation <ArrowUpRight size={18}/></Link></div>;}
+
+export function MobileNav({ close }: { close: () => void }) {
+  return <nav aria-label="Mobile navigation" className="mobile-nav">
+    {navigation.map(item => <Link key={item.href} href={item.href} onClick={close}>{item.label}<ArrowRight size={22} /></Link>)}
+    <Link className="button" href="/contact" onClick={close}>Talk to our team <ArrowRight size={22} /></Link>
+    <a className="mobile-menu-phone" href={site.phoneHref}><Phone size={22} /> Call {site.phone}</a>
+  </nav>;
+}
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const mobileToggle = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && open) {
+        setOpen(false);
+        mobileToggle.current?.focus();
+      }
+    };
+    const outside = (event: PointerEvent) => {
+      if (header.current && !header.current.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener('keydown', escape);
+    document.addEventListener('pointerdown', outside);
+    return () => { document.removeEventListener('keydown', escape); document.removeEventListener('pointerdown', outside); };
+  }, [open]);
+  return <header ref={header} className="site-header">
+    <div className="utility"><div className="container utility-inner"><span>Local people. Help at home.</span><div><a href={site.phoneHref}><Phone size={17} />{site.phone}</a><span className="utility-hours">{site.hours}</span></div></div></div>
+    <div className="container header-inner">
+      <Link href="/" aria-label={`${site.name} home`}><Wordmark /></Link>
+      <nav className="desktop-nav" aria-label="Main navigation">{navigation.filter(item => item.primary).map(item => <Link key={item.href} href={item.href} aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? 'page' : undefined}>{item.label}</Link>)}</nav>
+      <Link href="/contact" className="button header-cta">Talk to us <ArrowRight size={20} /></Link>
+      <a href={site.phoneHref} className="mobile-call"><Phone size={20} /> Call</a>
+      <button ref={mobileToggle} className="menu-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X size={23} /> : <Menu size={23} />}<span>Menu</span></button>
+    </div>
+    {open && <div id="mobile-navigation"><MobileNav close={() => setOpen(false)} /></div>}
+  </header>;
+}
+
+export function StickyMobileActions() {
+  return <div className="sticky-mobile-actions"><a href={site.phoneHref}><Phone size={21} /> Call us</a><Link href="/contact">Get free advice <ArrowRight size={21} /></Link></div>;
+}
