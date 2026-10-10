@@ -75,3 +75,22 @@ The source repository can stay private while the deployed website is publicly vi
 Future pushes to `main` will redeploy when the GitHub integration is connected. The source stays private; anyone allowed to access the deployment can see the rendered website and its public assets. Demo forms still do not send requests, and placeholder content remains labeled. Search indexing is intentionally disabled by `robots.ts`.
 
 A live preview has not been created until Vercel reports a successful deployment. No hosting account or deployment credentials are configured in this cloud workspace.
+
+## GitHub Pages preview
+
+A Pages workflow is included in `.github/workflows/pages.yml`. It builds a static export and deploys it when `main` changes. The expected project URL is `https://firepillmello.github.io/IndeMove/`.
+
+For this **private repository**, GitHub Pages requires GitHub Pro, Team, or Enterprise as applicable. If Pages is unavailable on your plan, upgrade, deliberately make the repository public, or use another host; this setup does not change repository visibility.
+
+To activate it:
+
+1. Open the repository's **Settings → Pages**.
+2. Under **Build and deployment → Source**, select **GitHub Actions**.
+3. Open **Actions → Deploy website to GitHub Pages** and choose **Run workflow** on `main` if no deployment is already running.
+4. Wait for both build and deploy jobs to succeed, then open the URL reported by the deployment. A private source repository does not by itself restrict access to the published site.
+
+```sh
+npm run build:pages
+```
+
+This generates `out/` for Pages with the `/IndeMove` path prefix, local unoptimized images, and directory-style URLs. All interactive features run in the browser, so no server is needed. Standard `npm run dev` and `npm run build` retain the normal Next.js configuration for other hosts. If the repository or owner changes, update the path and URL in the `build:pages` command. The workflow needs Actions enabled and permission to deploy to the `github-pages` environment.
