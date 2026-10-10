@@ -60,3 +60,18 @@ WCAG 2.2 AA is the design target, not a claim of certification. Complete manual 
 - Tested desktop and mobile navigation, Escape focus return, catalog search/filter/reset/empty state, all finder steps and restart, FAQ expansion, and validation plus local success for consultation, service, and rental forms.
 - Verified homepage links, category 404 behavior, sitemap, robots, and the production server. No page execution errors occurred.
 - Manual screen-reader testing and a full accessibility audit remain launch checks.
+
+## Deploy a shareable preview from the private GitHub repository
+
+The source repository can stay private while the deployed website is publicly viewable. A repository URL displays source code; it is not a running website.
+
+1. Create a Vercel account at https://vercel.com/signup using your GitHub account.
+2. Open https://vercel.com/new and authorize the Vercel GitHub integration for `firepillmello/IndeMove`. Grant access only to this repository if you prefer.
+3. Import `firepillmello/IndeMove`, select branch `main`, and leave the root directory at the repository root.
+4. Keep the detected **Next.js** framework and default build/output settings. No environment variables are needed. Click **Deploy**.
+5. Open the deployment URL shown by Vercel and test the homepage, `/products`, a category page, and `/contact`.
+6. In the project's Deployment Protection settings, confirm the deployment you intend to share does not require Vercel sign-in. Share its generated HTTPS URL. Protection defaults and available options can vary by plan.
+
+Future pushes to `main` will redeploy when the GitHub integration is connected. The source stays private; anyone allowed to access the deployment can see the rendered website and its public assets. Demo forms still do not send requests, and placeholder content remains labeled. Search indexing is intentionally disabled by `robots.ts`.
+
+A live preview has not been created until Vercel reports a successful deployment. No hosting account or deployment credentials are configured in this cloud workspace.
