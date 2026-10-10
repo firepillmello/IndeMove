@@ -1,0 +1,7 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowUpRight, BookOpen } from 'lucide-react';
+import { resources } from '@/data/resources';
+import { FinalCTA, PageIntro } from '@/components/UI';
+export const metadata:Metadata={title:'Helpful Mobility & Accessibility Resources',description:'Practical starting guides for choosing equipment, preparing for a home consultation, and planning short-term rentals.'};
+export default function Resources(){return <><PageIntro eyebrow="Helpful resources" title="A little knowledge.<br/>A lot more confidence." description="Plain-language guides to help you prepare, compare, and ask the questions that matter. General information only, not medical advice."/><section className="section"><div className="container"><div className="services-grid">{resources.map(r=><Link className="service-card" href={`/resources#${r.slug}`} key={r.slug}><span className="icon-tile"><BookOpen/></span><h2>{r.title}</h2><p>{r.description}</p><span className="text-link">Read the guide <ArrowUpRight size={18}/></span></Link>)}</div><div className="resource-guides">{resources.map(r=><article id={r.slug} key={r.slug}><p className="eyebrow">Practical guide</p><h2>{r.title}</h2>{r.content.map(p=><p key={p}>{p}</p>)}<Link className="text-link" href="/contact">Talk through your questions <ArrowUpRight size={18}/></Link></article>)}</div></div></section><FinalCTA/></>;}

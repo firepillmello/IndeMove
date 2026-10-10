@@ -1,0 +1,1 @@
+export const navigation = [{ label: 'Products', href: '/products' }, { label: 'Services', href: '/services' }, { label: 'Rentals', href: '/rentals' }, { label: 'Home Accessibility', href: '/home-accessibility' }, { label: 'About', href: '/about' }, { label: 'Resources', href: '/resources' }, { label: 'Contact', href: '/contact' }];
